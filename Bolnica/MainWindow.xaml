@@ -20,6 +20,6 @@
         <Frame x:Name="FrameMain" NavigationUIVisibility="Hidden" Grid.Row="1" />
         <Grid Grid.Row="3" Background="{StaticResource 1}"></Grid>
         <TextBlock Style="{StaticResource NeglavTextBlock}" Text="{Binding ElementName=FrameMain,Path=Content.Title}" HorizontalAlignment="Center"/>
-        <TextBlock Style="{StaticResource NeglavTextBlock}" Text="{Binding Klient.ID}" HorizontalAlignment="Right" Grid.Row="2"/>
+        <TextBlock Style="{StaticResource NeglavTextBlock}" Text="{Binding Klient,StringFormat={}dada {0}}" HorizontalAlignment="Right" Grid.Row="2"/>
     </Grid>
 </Window>

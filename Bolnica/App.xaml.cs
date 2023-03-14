@@ -20,7 +20,7 @@ namespace Bolnica
         { get; } = new Entities.BOOLEntities3();
 
 
-        public static Klient CurrentKlient { get; } = null;
+        public static Klient CurrentKlient { get; set; } = null;
 
     }
 }

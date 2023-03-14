@@ -32,7 +32,7 @@ namespace Bolnica.Pages
 
             if (Klient != null)
             {
-                App.klient = Klient;
+                App.CurrentKlient = Klient;
                 NavigationService.Navigate(new SpisokZap());
             }
                 else
