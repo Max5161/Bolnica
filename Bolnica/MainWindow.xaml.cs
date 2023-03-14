@@ -1,7 +1,9 @@
 ﻿using Bolnica.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,9 +21,14 @@ namespace Bolnica
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        public Klient Klient { get; set; }
+        private Klient klient;
+        public Klient Klient { get => klient; 
+            set {
+                klient = value;
+                OnPropertyChanged();
+            } }
         public MainWindow()
         {
             InitializeComponent();
@@ -29,7 +36,6 @@ namespace Bolnica
             DataContext = this;
         }
 
-        
 
         private void BtnBack_Click_1(object sender, RoutedEventArgs e)
         {
@@ -37,6 +43,14 @@ namespace Bolnica
                 FrameMain.GoBack();
         }
 
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
        
     }
 }
