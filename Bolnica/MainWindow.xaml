@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Bolnica"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance {x:Type local:MainWindow}}"
         Title="MainWindow" MinHeight="450" MinWidth="800" Icon="Logo\home_health_FILL0_wght400_GRAD0_opsz48.png">
     <Grid>
         <Grid.RowDefinitions>
@@ -19,6 +20,6 @@
         <Frame x:Name="FrameMain" NavigationUIVisibility="Hidden" Grid.Row="1" />
         <Grid Grid.Row="3" Background="{StaticResource 1}"></Grid>
         <TextBlock Style="{StaticResource NeglavTextBlock}" Text="{Binding ElementName=FrameMain,Path=Content.Title}" HorizontalAlignment="Center"/>
-        <TextBlock Style="{StaticResource NeglavTextBlock}" Text="{Binding}" HorizontalAlignment="Right" Grid.Row="2"/>
+        <TextBlock Style="{StaticResource NeglavTextBlock}" Text="{Binding Klient.ID}" HorizontalAlignment="Right" Grid.Row="2"/>
     </Grid>
 </Window>

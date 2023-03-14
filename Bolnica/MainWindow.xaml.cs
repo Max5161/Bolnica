@@ -26,6 +26,7 @@ namespace Bolnica
         {
             InitializeComponent();
             FrameMain.Navigate(new Pages.LoginPage());
+            DataContext = this;
         }
 
         
