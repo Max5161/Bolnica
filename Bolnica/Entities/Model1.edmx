@@ -1,0 +1,447 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище BOOLModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Klient">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Familia" Type="nvarchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Otchestvo" Type="nvarchar" MaxLength="50" />
+          <Property Name="Vozrast" Type="int" />
+          <Property Name="Mesto_raboti" Type="nvarchar" MaxLength="50" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Med_kart_and_Spisok_naznach">
+          <Key>
+            <PropertyRef Name="ID_Med_kard" />
+            <PropertyRef Name="ID_Spiska_lekarstv" />
+          </Key>
+          <Property Name="ID_Med_kard" Type="int" Nullable="false" />
+          <Property Name="ID_Spiska_lekarstv" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Med_karta">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date_posehenia" Type="date" />
+          <Property Name="Naznachenie" Type="nvarchar" MaxLength="50" />
+          <Property Name="ID_Vrach" Type="int" />
+          <Property Name="Jalobi" Type="nvarchar" MaxLength="50" />
+          <Property Name="ID_Diagnoza" Type="int" />
+        </EntityType>
+        <EntityType Name="Spisok_diagnozov">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Naimenovanie" Type="nvarchar" MaxLength="50" />
+          <Property Name="Opisanie" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Spisok_lekarstv">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Naimenovanie" Type="nvarchar" MaxLength="50" />
+          <Property Name="Opisanie" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Vrachi">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Familia" Type="nvarchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Otchestvo" Type="nvarchar" MaxLength="50" />
+          <Property Name="Stag" Type="int" />
+          <Property Name="Doljnost" Type="nvarchar" MaxLength="50" />
+          <Property Name="Otdelenie" Type="nvarchar" MaxLength="50" />
+          <Property Name="Vozrast" Type="nvarchar" MaxLength="50" />
+          <Property Name="Photo" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Zapis">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Med_kard" Type="int" Nullable="false" />
+          <Property Name="ID_Klient" Type="int" Nullable="false" />
+          <Property Name="Vrach" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Med_kart_+_Spisok_lek_Med_karta">
+          <End Role="Med_karta" Type="Self.Med_karta" Multiplicity="1" />
+          <End Role="Med_kart_and_Spisok_naznach" Type="Self.Med_kart_and_Spisok_naznach" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Med_karta">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Med_kart_and_Spisok_naznach">
+              <PropertyRef Name="ID_Med_kard" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Med_kart_+_Spisok_lek_Spisok_lekarstv">
+          <End Role="Spisok_lekarstv" Type="Self.Spisok_lekarstv" Multiplicity="1" />
+          <End Role="Med_kart_and_Spisok_naznach" Type="Self.Med_kart_and_Spisok_naznach" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spisok_lekarstv">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Med_kart_and_Spisok_naznach">
+              <PropertyRef Name="ID_Spiska_lekarstv" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Med_karta_Spisok_diagnozov">
+          <End Role="Spisok_diagnozov" Type="Self.Spisok_diagnozov" Multiplicity="0..1" />
+          <End Role="Med_karta" Type="Self.Med_karta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spisok_diagnozov">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Med_karta">
+              <PropertyRef Name="ID_Diagnoza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Med_karta_Vrachi">
+          <End Role="Vrachi" Type="Self.Vrachi" Multiplicity="0..1" />
+          <End Role="Med_karta" Type="Self.Med_karta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vrachi">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Med_karta">
+              <PropertyRef Name="ID_Vrach" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zapis_Klient">
+          <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
+          <End Role="Zapis" Type="Self.Zapis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klient">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Zapis">
+              <PropertyRef Name="ID_Klient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zapis_Med_karta1">
+          <End Role="Med_karta" Type="Self.Med_karta" Multiplicity="1" />
+          <End Role="Zapis" Type="Self.Zapis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Med_karta">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Zapis">
+              <PropertyRef Name="ID_Med_kard" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище BOOLModelContainer">
+          <EntitySet Name="Klient" EntityType="Self.Klient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Med_kart_and_Spisok_naznach" EntityType="Self.Med_kart_and_Spisok_naznach" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Med_karta" EntityType="Self.Med_karta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Spisok_diagnozov" EntityType="Self.Spisok_diagnozov" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Spisok_lekarstv" EntityType="Self.Spisok_lekarstv" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vrachi" EntityType="Self.Vrachi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Zapis" EntityType="Self.Zapis" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Med_kart_+_Spisok_lek_Med_karta" Association="Self.FK_Med_kart_+_Spisok_lek_Med_karta">
+            <End Role="Med_karta" EntitySet="Med_karta" />
+            <End Role="Med_kart_and_Spisok_naznach" EntitySet="Med_kart_and_Spisok_naznach" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Med_kart_+_Spisok_lek_Spisok_lekarstv" Association="Self.FK_Med_kart_+_Spisok_lek_Spisok_lekarstv">
+            <End Role="Spisok_lekarstv" EntitySet="Spisok_lekarstv" />
+            <End Role="Med_kart_and_Spisok_naznach" EntitySet="Med_kart_and_Spisok_naznach" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Med_karta_Spisok_diagnozov" Association="Self.FK_Med_karta_Spisok_diagnozov">
+            <End Role="Spisok_diagnozov" EntitySet="Spisok_diagnozov" />
+            <End Role="Med_karta" EntitySet="Med_karta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Med_karta_Vrachi" Association="Self.FK_Med_karta_Vrachi">
+            <End Role="Vrachi" EntitySet="Vrachi" />
+            <End Role="Med_karta" EntitySet="Med_karta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zapis_Klient" Association="Self.FK_Zapis_Klient">
+            <End Role="Klient" EntitySet="Klient" />
+            <End Role="Zapis" EntitySet="Zapis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zapis_Med_karta1" Association="Self.FK_Zapis_Med_karta1">
+            <End Role="Med_karta" EntitySet="Med_karta" />
+            <End Role="Zapis" EntitySet="Zapis" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BOOLModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Klient">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Familia" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Otchestvo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Vozrast" Type="Int32" />
+          <Property Name="Mesto_raboti" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Zapis" Relationship="Self.FK_Zapis_Klient" FromRole="Klient" ToRole="Zapis" />
+        </EntityType>
+        <EntityType Name="Med_karta">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Vrach" Type="Int32" />
+          <Property Name="Jalobi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ID_Diagnoza" Type="Int32" />
+          <NavigationProperty Name="Spisok_diagnozov" Relationship="Self.FK_Med_karta_Spisok_diagnozov" FromRole="Med_karta" ToRole="Spisok_diagnozov" />
+          <NavigationProperty Name="Vrachi" Relationship="Self.FK_Med_karta_Vrachi" FromRole="Med_karta" ToRole="Vrachi" />
+          <NavigationProperty Name="Zapis" Relationship="Self.FK_Zapis_Med_karta1" FromRole="Med_karta" ToRole="Zapis" />
+          <NavigationProperty Name="Spisok_lekarstv" Relationship="Self.Med_kart_and_Spisok_naznach" FromRole="Med_karta" ToRole="Spisok_lekarstv" />
+          <Property Name="Date_posehenia" Type="DateTime" Precision="0" />
+          <Property Name="Naznachenie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Spisok_diagnozov">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naimenovanie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Opisanie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Med_karta" Relationship="Self.FK_Med_karta_Spisok_diagnozov" FromRole="Spisok_diagnozov" ToRole="Med_karta" />
+        </EntityType>
+        <EntityType Name="Spisok_lekarstv">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naimenovanie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Opisanie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Med_karta" Relationship="Self.Med_kart_and_Spisok_naznach" FromRole="Spisok_lekarstv" ToRole="Med_karta" />
+        </EntityType>
+        <EntityType Name="Vrachi">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Familia" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Otchestvo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Stag" Type="Int32" />
+          <Property Name="Doljnost" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Otdelenie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Vozrast" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Med_karta" Relationship="Self.FK_Med_karta_Vrachi" FromRole="Vrachi" ToRole="Med_karta" />
+        </EntityType>
+        <EntityType Name="Zapi">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Med_kard" Type="Int32" Nullable="false" />
+          <Property Name="ID_Klient" Type="Int32" Nullable="false" />
+          <Property Name="Vrach" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Klient" Relationship="Self.FK_Zapis_Klient" FromRole="Zapis" ToRole="Klient" />
+          <NavigationProperty Name="Med_karta" Relationship="Self.FK_Zapis_Med_karta1" FromRole="Zapis" ToRole="Med_karta" />
+        </EntityType>
+        <Association Name="FK_Zapis_Klient">
+          <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
+          <End Role="Zapis" Type="Self.Zapi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klient">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Zapis">
+              <PropertyRef Name="ID_Klient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Med_karta_Spisok_diagnozov">
+          <End Role="Spisok_diagnozov" Type="Self.Spisok_diagnozov" Multiplicity="0..1" />
+          <End Role="Med_karta" Type="Self.Med_karta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spisok_diagnozov">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Med_karta">
+              <PropertyRef Name="ID_Diagnoza" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Med_karta_Vrachi">
+          <End Role="Vrachi" Type="Self.Vrachi" Multiplicity="0..1" />
+          <End Role="Med_karta" Type="Self.Med_karta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vrachi">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Med_karta">
+              <PropertyRef Name="ID_Vrach" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zapis_Med_karta1">
+          <End Role="Med_karta" Type="Self.Med_karta" Multiplicity="1" />
+          <End Role="Zapis" Type="Self.Zapi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Med_karta">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Zapis">
+              <PropertyRef Name="ID_Med_kard" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Med_kart_and_Spisok_naznach">
+          <End Role="Med_karta" Type="Self.Med_karta" Multiplicity="*" />
+          <End Role="Spisok_lekarstv" Type="Self.Spisok_lekarstv" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="BOOLEntities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Klients" EntityType="Self.Klient" />
+          <EntitySet Name="Med_karta" EntityType="Self.Med_karta" />
+          <EntitySet Name="Spisok_diagnozov" EntityType="Self.Spisok_diagnozov" />
+          <EntitySet Name="Spisok_lekarstv" EntityType="Self.Spisok_lekarstv" />
+          <EntitySet Name="Vrachis" EntityType="Self.Vrachi" />
+          <EntitySet Name="Zapis" EntityType="Self.Zapi" />
+          <AssociationSet Name="FK_Zapis_Klient" Association="Self.FK_Zapis_Klient">
+            <End Role="Klient" EntitySet="Klients" />
+            <End Role="Zapis" EntitySet="Zapis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Med_karta_Spisok_diagnozov" Association="Self.FK_Med_karta_Spisok_diagnozov">
+            <End Role="Spisok_diagnozov" EntitySet="Spisok_diagnozov" />
+            <End Role="Med_karta" EntitySet="Med_karta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Med_karta_Vrachi" Association="Self.FK_Med_karta_Vrachi">
+            <End Role="Vrachi" EntitySet="Vrachis" />
+            <End Role="Med_karta" EntitySet="Med_karta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zapis_Med_karta1" Association="Self.FK_Zapis_Med_karta1">
+            <End Role="Med_karta" EntitySet="Med_karta" />
+            <End Role="Zapis" EntitySet="Zapis" />
+          </AssociationSet>
+          <AssociationSet Name="Med_kart_and_Spisok_naznach" Association="Self.Med_kart_and_Spisok_naznach">
+            <End Role="Med_karta" EntitySet="Med_karta" />
+            <End Role="Spisok_lekarstv" EntitySet="Spisok_lekarstv" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище BOOLModelContainer" CdmEntityContainer="BOOLEntities3">
+          <EntitySetMapping Name="Klients">
+            <EntityTypeMapping TypeName="BOOLModel.Klient">
+              <MappingFragment StoreEntitySet="Klient">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Familia" ColumnName="Familia" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Otchestvo" ColumnName="Otchestvo" />
+                <ScalarProperty Name="Vozrast" ColumnName="Vozrast" />
+                <ScalarProperty Name="Mesto_raboti" ColumnName="Mesto_raboti" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Med_karta">
+            <EntityTypeMapping TypeName="BOOLModel.Med_karta">
+              <MappingFragment StoreEntitySet="Med_karta">
+                <ScalarProperty Name="Naznachenie" ColumnName="Naznachenie" />
+                <ScalarProperty Name="Date_posehenia" ColumnName="Date_posehenia" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_Vrach" ColumnName="ID_Vrach" />
+                <ScalarProperty Name="Jalobi" ColumnName="Jalobi" />
+                <ScalarProperty Name="ID_Diagnoza" ColumnName="ID_Diagnoza" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Spisok_diagnozov">
+            <EntityTypeMapping TypeName="BOOLModel.Spisok_diagnozov">
+              <MappingFragment StoreEntitySet="Spisok_diagnozov">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Naimenovanie" ColumnName="Naimenovanie" />
+                <ScalarProperty Name="Opisanie" ColumnName="Opisanie" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Spisok_lekarstv">
+            <EntityTypeMapping TypeName="BOOLModel.Spisok_lekarstv">
+              <MappingFragment StoreEntitySet="Spisok_lekarstv">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Naimenovanie" ColumnName="Naimenovanie" />
+                <ScalarProperty Name="Opisanie" ColumnName="Opisanie" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vrachis">
+            <EntityTypeMapping TypeName="BOOLModel.Vrachi">
+              <MappingFragment StoreEntitySet="Vrachi">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Familia" ColumnName="Familia" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Otchestvo" ColumnName="Otchestvo" />
+                <ScalarProperty Name="Stag" ColumnName="Stag" />
+                <ScalarProperty Name="Doljnost" ColumnName="Doljnost" />
+                <ScalarProperty Name="Otdelenie" ColumnName="Otdelenie" />
+                <ScalarProperty Name="Vozrast" ColumnName="Vozrast" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Zapis">
+            <EntityTypeMapping TypeName="BOOLModel.Zapi">
+              <MappingFragment StoreEntitySet="Zapis">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_Med_kard" ColumnName="ID_Med_kard" />
+                <ScalarProperty Name="ID_Klient" ColumnName="ID_Klient" />
+                <ScalarProperty Name="Vrach" ColumnName="Vrach" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Med_kart_and_Spisok_naznach" TypeName="BOOLModel.Med_kart_and_Spisok_naznach" StoreEntitySet="Med_kart_and_Spisok_naznach">
+            <EndProperty Name="Med_karta">
+              <ScalarProperty Name="ID" ColumnName="ID_Med_kard" />
+            </EndProperty>
+            <EndProperty Name="Spisok_lekarstv">
+              <ScalarProperty Name="ID" ColumnName="ID_Spiska_lekarstv" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,102 @@
+﻿<Page x:Class="Bolnica.Pages.ZapkVrach"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Bolnica.Pages"
+      mc:Ignorable="d" 
+    MinHeight="450" MinWidth="800"
+      Title="Запись к врачу">
+
+    <Grid>
+        <Button Grid.Row="0" HorizontalAlignment="Right"
+                Name="BtnVihod" Click="BtnVihod_Click"
+                Content="Выйти из аккаунта" Style="{StaticResource Buttonstule}" Height="50" VerticalAlignment="Top"></Button>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+            <ListView Grid.Row="2" Name="LviewService" MinWidth="280" Height="150">
+            <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="{StaticResource 1}">
+                            <Grid>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource NeglavTextBlock1}"
+                                           Text="{Binding ID, StringFormat={}ID мед карты {0} -}"/>
+                                        <TextBlock Style="{StaticResource NeglavTextBlock1}" Margin="5 0 0 0"
+                                           Text="{Binding Jalobi}"/>
+                                    </StackPanel>
+                                    
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                    <TextBlock   Height="30" Text="ID клиента" Margin="5" Style="{StaticResource TBStul}"/>
+                    <TextBox   Width="224" Height="30" x:Name="TboxIdClientss" Margin="5"/>
+
+                </StackPanel>
+
+
+
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                    <TextBlock  Height="30" Text="Врач" Margin="5" Style="{StaticResource TBStul}"/>
+
+                    <ComboBox Margin="5" Width="224" Style="{StaticResource ComboStul}"
+           Name="ComboVrachi" SelectionChanged="ComboSortBy_SelectionChanged">
+                        <ComboBoxItem Content="Психиатр"></ComboBoxItem>
+                        <ComboBoxItem Content="Нарколог"></ComboBoxItem>
+                        <ComboBoxItem Content="Офтальмолог"></ComboBoxItem>
+                        <ComboBoxItem Content="Терапевт"></ComboBoxItem>
+                        <ComboBoxItem Content="Аллерголог"></ComboBoxItem>
+                        <ComboBoxItem Content="Невропатолог"></ComboBoxItem>
+                        <ComboBoxItem Content="Хирург"></ComboBoxItem>
+                        <ComboBoxItem Content="Пульмонолог"></ComboBoxItem>
+                        <ComboBoxItem Content="Санитарный врач"></ComboBoxItem>
+                        <ComboBoxItem Content="Физиотерапевт"></ComboBoxItem>
+                        <ComboBoxItem Content="Ортопед"></ComboBoxItem>
+                        <ComboBoxItem Content="Реаниматолог"></ComboBoxItem>
+                        <ComboBoxItem Content="Кардиолог"></ComboBoxItem>
+                        <ComboBoxItem Content="Эпидемиолог"></ComboBoxItem>
+                    </ComboBox>
+
+
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                    <TextBlock  Height="30" Text="ID мед карты" Margin="5" Style="{StaticResource TBStul}"/>
+                    <TextBox   Width="224" Height="30" x:Name="TboxIDmedKard" Margin="5"/>
+
+                </StackPanel>
+
+
+               
+
+               
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                </StackPanel>
+
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel>
+
+                </StackPanel>
+                <Button x:Name="ButttonZapisatsa" Width="150" Height="30" Style="{StaticResource Buttonstule}" Content="Сохранить" Margin="5" Click="ButttonZapisatsa_Click">
+                </Button>
+            </StackPanel>
+
+        </StackPanel>
+
+    </Grid>
+</Page>
