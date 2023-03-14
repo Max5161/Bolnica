@@ -29,6 +29,7 @@ namespace Bolnica
                 klient = value;
                 OnPropertyChanged();
             } }
+
         public MainWindow()
         {
             InitializeComponent();
