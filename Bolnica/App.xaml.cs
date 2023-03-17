@@ -16,11 +16,11 @@ namespace Bolnica
     /// </summary>
     public partial class App : Application
     {
-        public static Entities.BOOLEntities3 Context
-        { get; } = new Entities.BOOLEntities3();
+        public static Entities.BoolEntities Context
+        { get; } = new Entities.BoolEntities();
 
 
-        public static Klient CurrentKlient { get; set; } = null;
+        public static User CurrentKlient { get; set; } = null;
 
     }
 }

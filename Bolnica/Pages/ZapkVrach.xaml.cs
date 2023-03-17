@@ -25,8 +25,8 @@ namespace Bolnica.Pages
         {
             InitializeComponent();
             Upduk();
+            ComboVrachi.ItemsSource = App.Context.Vrachis.ToList();
         }
-
         public void Upduk()
         {
             var med = App.Context.Med_karta.ToList();
@@ -35,12 +35,9 @@ namespace Bolnica.Pages
 
             LviewService.ItemsSource = med;
         }
-
         private void ComboSortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
-
         private void ButttonZapisatsa_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(ComboVrachi.Text)
@@ -56,7 +53,7 @@ namespace Bolnica.Pages
                     {
                         ID_Med_kard = int.Parse(TboxIDmedKard.Text),
                         ID_Klient = int.Parse(TboxIdClientss.Text),
-                        Vrach = ComboVrachi.SelectedIndex.ToString(),
+                        Vrach = (int)ComboVrachi.SelectedValue,
 
                     };
                     App.Context.Zapis.Add(zap);
@@ -65,7 +62,6 @@ namespace Bolnica.Pages
                 NavigationService.GoBack();
             }
         }
-
         private void BtnVihod_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Pages.LoginPage());

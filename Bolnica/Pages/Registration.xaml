@@ -30,7 +30,7 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 
                     <TextBlock  Height="30" Text="Отчество" Margin="5" Style="{StaticResource TBStul}"/>
-                    <TextBox   Width="224" Height="30" x:Name="TboxOtchestvo" Margin="5"/>
+                    <TextBox   Width="224" Height="30" x:Name="TboxOtchestvo" Margin="5" TextChanged="TboxOtchestvo_TextChanged"/>
 
                 </StackPanel>
 

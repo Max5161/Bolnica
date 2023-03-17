@@ -13,10 +13,10 @@ namespace Bolnica.Entities
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class BOOLEntities3 : DbContext
+    public partial class BoolEntities : DbContext
     {
-        public BOOLEntities3()
-            : base("name=BOOLEntities3")
+        public BoolEntities()
+            : base("name=BoolEntities")
         {
         }
     
@@ -27,8 +27,11 @@ namespace Bolnica.Entities
     
         public virtual DbSet<Klient> Klients { get; set; }
         public virtual DbSet<Med_karta> Med_karta { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Spisok_diagnozov> Spisok_diagnozov { get; set; }
         public virtual DbSet<Spisok_lekarstv> Spisok_lekarstv { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Vrachi> Vrachis { get; set; }
         public virtual DbSet<Zapi> Zapis { get; set; }
     }

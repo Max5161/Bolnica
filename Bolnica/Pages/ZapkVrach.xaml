@@ -9,9 +9,6 @@
       Title="Запись к врачу">
 
     <Grid>
-        <Button Grid.Row="0" HorizontalAlignment="Right"
-                Name="BtnVihod" Click="BtnVihod_Click"
-                Content="Выйти из аккаунта" Style="{StaticResource Buttonstule}" Height="50" VerticalAlignment="Top"></Button>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
             <ListView Grid.Row="2" Name="LviewService" MinWidth="280" Height="150">
             <ListView.ItemTemplate>
@@ -50,22 +47,9 @@
 
                     <TextBlock  Height="30" Text="Врач" Margin="5" Style="{StaticResource TBStul}"/>
 
-                    <ComboBox Margin="5" Width="224" Style="{StaticResource ComboStul}"
+                    <ComboBox Margin="5" Width="224" Style="{StaticResource ComboStul}" DisplayMemberPath="Doljnost" SelectedValuePath="ID"
            Name="ComboVrachi" SelectionChanged="ComboSortBy_SelectionChanged">
-                        <ComboBoxItem Content="Психиатр"></ComboBoxItem>
-                        <ComboBoxItem Content="Нарколог"></ComboBoxItem>
-                        <ComboBoxItem Content="Офтальмолог"></ComboBoxItem>
-                        <ComboBoxItem Content="Терапевт"></ComboBoxItem>
-                        <ComboBoxItem Content="Аллерголог"></ComboBoxItem>
-                        <ComboBoxItem Content="Невропатолог"></ComboBoxItem>
-                        <ComboBoxItem Content="Хирург"></ComboBoxItem>
-                        <ComboBoxItem Content="Пульмонолог"></ComboBoxItem>
-                        <ComboBoxItem Content="Санитарный врач"></ComboBoxItem>
-                        <ComboBoxItem Content="Физиотерапевт"></ComboBoxItem>
-                        <ComboBoxItem Content="Ортопед"></ComboBoxItem>
-                        <ComboBoxItem Content="Реаниматолог"></ComboBoxItem>
-                        <ComboBoxItem Content="Кардиолог"></ComboBoxItem>
-                        <ComboBoxItem Content="Эпидемиолог"></ComboBoxItem>
+                    
                     </ComboBox>
 
 

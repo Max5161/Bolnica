@@ -20,37 +20,42 @@ namespace Bolnica.Pages
     /// </summary>
     public partial class LoginPage : Page
     {
+        public MainWindow mainModel {get;set;}
         public LoginPage()
         {
             InitializeComponent();
         }
-
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
-            var Klient = App.Context.Klients
+            var User = App.Context.Users
                 .FirstOrDefault(p => p.Login == TBoxLogin.Text && p.Password == PBoxPassword.Password);
-
-            if (Klient != null)
+            if (User != null)
             {
-                App.CurrentKlient = Klient;
+                App.CurrentKlient = User;
                 NavigationService.Navigate(new SpisokZap());
+                mainModel.User = User;
+                if (User.Rol_ID == 2)
+                {
+                    App.CurrentKlient = User;
+                    NavigationService.Navigate(new SpisZapkVrachh(User));
+                    mainModel.User = User;
+                }
             }
-                else
+            else
             {
                 MessageBox.Show("Пользователь с такими данными не найден.", "Ошибки",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            
+
+        }
+        private void BtnReg_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Pages.Registration());
         }
 
         private void TBoxLogin_TextChanged(object sender, TextChangedEventArgs e)
         {
 
-        }
-
-        private void BtnReg_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new Pages.Registration());
         }
     }
 }

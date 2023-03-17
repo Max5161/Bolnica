@@ -21,8 +21,8 @@
                 Name="BtnZapis" Click="BtnZapis_Click"
                 Content="Записаться к врачу" Style="{StaticResource Buttonstule}"></Button>
         <Button Grid.Row="0" HorizontalAlignment="Right"
-                Name="BtnVihod" Click="BtnVihod_Click"
-                Content="Выйти из аккаунта" Style="{StaticResource Buttonstule}" Height="50" VerticalAlignment="Top"></Button>
+                Name="BtnSpiszap" Click="BtnSpiszap_Click"
+                Content="Список записей" Style="{StaticResource Buttonstule}" Height="50" VerticalAlignment="Top"></Button>
         <StackPanel Orientation="Horizontal">
             <TextBox x:Name="TboxSerch" Width="150" Margin="5" Style="{StaticResource TextboxStul}" 
                         TextChanged="TboxSerch_TextChanged"></TextBox>
@@ -48,7 +48,7 @@
         <ListView Grid.Row="2" Name="LviewService">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="{StaticResource 1}">
+                    <Border BorderBrush="{StaticResource 1}" BorderThickness="3">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100"></ColumnDefinition>

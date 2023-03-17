@@ -1,4 +1,5 @@
 ﻿using Bolnica.Entities;
+using Bolnica.Pages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,17 +24,21 @@ namespace Bolnica
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private Klient klient;
-        public Klient Klient { get => klient; 
+        private User user;
+        public User User { get => user; 
             set {
-                klient = value;
+                user = value;
                 OnPropertyChanged();
             } }
+
+
 
         public MainWindow()
         {
             InitializeComponent();
-            FrameMain.Navigate(new Pages.LoginPage());
+            var log = new LoginPage();
+            log.mainModel = this;
+            FrameMain.Navigate(log);
             DataContext = this;
         }
 

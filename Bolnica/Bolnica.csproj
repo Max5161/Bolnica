@@ -93,11 +93,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Role.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\ServicePartial.cs" />
     <Compile Include="Entities\Spisok_diagnozov.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Spisok_lekarstv.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\sysdiagram.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\User.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Vrachi.cs">
@@ -122,6 +131,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\SpisZapkVrachh.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\ZapkVrach.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -136,6 +149,9 @@
     </Compile>
     <Compile Include="Pages\SpisokZap.xaml.cs">
       <DependentUpon>SpisokZap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SpisZapkVrachh.xaml.cs">
+      <DependentUpon>SpisZapkVrachh.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ZapkVrach.xaml.cs">
       <DependentUpon>ZapkVrach.xaml</DependentUpon>

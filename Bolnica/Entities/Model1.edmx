@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Хранилище BOOLModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище BoolModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Klient">
           <Key>
             <PropertyRef Name="ID" />
@@ -15,8 +15,7 @@
           <Property Name="Otchestvo" Type="nvarchar" MaxLength="50" />
           <Property Name="Vozrast" Type="int" />
           <Property Name="Mesto_raboti" Type="nvarchar" MaxLength="50" />
-          <Property Name="Login" Type="nvarchar" MaxLength="50" />
-          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="User_ID" Type="int" />
         </EntityType>
         <EntityType Name="Med_kart_and_Spisok_naznach">
           <Key>
@@ -37,6 +36,13 @@
           <Property Name="Jalobi" Type="nvarchar" MaxLength="50" />
           <Property Name="ID_Diagnoza" Type="int" />
         </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Rol_ID" />
+          </Key>
+          <Property Name="Rol_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Spisok_diagnozov">
           <Key>
             <PropertyRef Name="ID" />
@@ -53,6 +59,25 @@
           <Property Name="Naimenovanie" Type="nvarchar" MaxLength="50" />
           <Property Name="Opisanie" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="User_Id" />
+          </Key>
+          <Property Name="User_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Rol_ID" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Vrachi">
           <Key>
             <PropertyRef Name="ID" />
@@ -66,6 +91,7 @@
           <Property Name="Otdelenie" Type="nvarchar" MaxLength="50" />
           <Property Name="Vozrast" Type="nvarchar" MaxLength="50" />
           <Property Name="Photo" Type="nvarchar(max)" />
+          <Property Name="User_ID" Type="int" />
         </EntityType>
         <EntityType Name="Zapis">
           <Key>
@@ -74,8 +100,20 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ID_Med_kard" Type="int" Nullable="false" />
           <Property Name="ID_Klient" Type="int" Nullable="false" />
-          <Property Name="Vrach" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Vrach" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Klient_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Klient" Type="Self.Klient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Klient">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Med_kart_+_Spisok_lek_Med_karta">
           <End Role="Med_karta" Type="Self.Med_karta" Multiplicity="1" />
           <End Role="Med_kart_and_Spisok_naznach" Type="Self.Med_kart_and_Spisok_naznach" Multiplicity="*" />
@@ -124,6 +162,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_User_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Rol_ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Rol_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vrachi_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Vrachi" Type="Self.Vrachi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Vrachi">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Zapis_Klient">
           <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
           <End Role="Zapis" Type="Self.Zapis" Multiplicity="*" />
@@ -148,14 +210,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Хранилище BOOLModelContainer">
+        <EntityContainer Name="Хранилище BoolModelContainer">
           <EntitySet Name="Klient" EntityType="Self.Klient" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Med_kart_and_Spisok_naznach" EntityType="Self.Med_kart_and_Spisok_naznach" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Med_karta" EntityType="Self.Med_karta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Spisok_diagnozov" EntityType="Self.Spisok_diagnozov" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Spisok_lekarstv" EntityType="Self.Spisok_lekarstv" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vrachi" EntityType="Self.Vrachi" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Zapis" EntityType="Self.Zapis" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Klient_User" Association="Self.FK_Klient_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Klient" EntitySet="Klient" />
+          </AssociationSet>
           <AssociationSet Name="FK_Med_kart_+_Spisok_lek_Med_karta" Association="Self.FK_Med_kart_+_Spisok_lek_Med_karta">
             <End Role="Med_karta" EntitySet="Med_karta" />
             <End Role="Med_kart_and_Spisok_naznach" EntitySet="Med_kart_and_Spisok_naznach" />
@@ -172,6 +241,14 @@
             <End Role="Vrachi" EntitySet="Vrachi" />
             <End Role="Med_karta" EntitySet="Med_karta" />
           </AssociationSet>
+          <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vrachi_User" Association="Self.FK_Vrachi_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Vrachi" EntitySet="Vrachi" />
+          </AssociationSet>
           <AssociationSet Name="FK_Zapis_Klient" Association="Self.FK_Zapis_Klient">
             <End Role="Klient" EntitySet="Klient" />
             <End Role="Zapis" EntitySet="Zapis" />
@@ -184,7 +261,50 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="BOOLModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="BoolModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BoolEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Klients" EntityType="BoolModel.Klient" />
+          <EntitySet Name="Med_karta" EntityType="BoolModel.Med_karta" />
+          <EntitySet Name="Roles" EntityType="BoolModel.Role" />
+          <EntitySet Name="Spisok_diagnozov" EntityType="BoolModel.Spisok_diagnozov" />
+          <EntitySet Name="Spisok_lekarstv" EntityType="BoolModel.Spisok_lekarstv" />
+          <EntitySet Name="sysdiagrams" EntityType="BoolModel.sysdiagram" />
+          <EntitySet Name="Users" EntityType="BoolModel.User" />
+          <EntitySet Name="Vrachis" EntityType="BoolModel.Vrachi" />
+          <EntitySet Name="Zapis" EntityType="BoolModel.Zapi" />
+          <AssociationSet Name="FK_Klient_User" Association="BoolModel.FK_Klient_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Klient" EntitySet="Klients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zapis_Klient" Association="BoolModel.FK_Zapis_Klient">
+            <End Role="Klient" EntitySet="Klients" />
+            <End Role="Zapi" EntitySet="Zapis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Med_karta_Spisok_diagnozov" Association="BoolModel.FK_Med_karta_Spisok_diagnozov">
+            <End Role="Spisok_diagnozov" EntitySet="Spisok_diagnozov" />
+            <End Role="Med_karta" EntitySet="Med_karta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Med_karta_Vrachi" Association="BoolModel.FK_Med_karta_Vrachi">
+            <End Role="Vrachi" EntitySet="Vrachis" />
+            <End Role="Med_karta" EntitySet="Med_karta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zapis_Med_karta1" Association="BoolModel.FK_Zapis_Med_karta1">
+            <End Role="Med_karta" EntitySet="Med_karta" />
+            <End Role="Zapi" EntitySet="Zapis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Role" Association="BoolModel.FK_User_Role">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vrachi_User" Association="BoolModel.FK_Vrachi_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Vrachi" EntitySet="Vrachis" />
+          </AssociationSet>
+          <AssociationSet Name="Med_kart_and_Spisok_naznach" Association="BoolModel.Med_kart_and_Spisok_naznach">
+            <End Role="Med_karta" EntitySet="Med_karta" />
+            <End Role="Spisok_lekarstv" EntitySet="Spisok_lekarstv" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Klient">
           <Key>
             <PropertyRef Name="ID" />
@@ -195,24 +315,32 @@
           <Property Name="Otchestvo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Vozrast" Type="Int32" />
           <Property Name="Mesto_raboti" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Zapis" Relationship="Self.FK_Zapis_Klient" FromRole="Klient" ToRole="Zapis" />
+          <Property Name="User_ID" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="BoolModel.FK_Klient_User" FromRole="Klient" ToRole="User" />
+          <NavigationProperty Name="Zapis" Relationship="BoolModel.FK_Zapis_Klient" FromRole="Klient" ToRole="Zapi" />
         </EntityType>
         <EntityType Name="Med_karta">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date_posehenia" Type="DateTime" Precision="0" />
+          <Property Name="Naznachenie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ID_Vrach" Type="Int32" />
           <Property Name="Jalobi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ID_Diagnoza" Type="Int32" />
-          <NavigationProperty Name="Spisok_diagnozov" Relationship="Self.FK_Med_karta_Spisok_diagnozov" FromRole="Med_karta" ToRole="Spisok_diagnozov" />
-          <NavigationProperty Name="Vrachi" Relationship="Self.FK_Med_karta_Vrachi" FromRole="Med_karta" ToRole="Vrachi" />
-          <NavigationProperty Name="Zapis" Relationship="Self.FK_Zapis_Med_karta1" FromRole="Med_karta" ToRole="Zapis" />
-          <NavigationProperty Name="Spisok_lekarstv" Relationship="Self.Med_kart_and_Spisok_naznach" FromRole="Med_karta" ToRole="Spisok_lekarstv" />
-          <Property Name="Date_posehenia" Type="DateTime" Precision="0" />
-          <Property Name="Naznachenie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Spisok_diagnozov" Relationship="BoolModel.FK_Med_karta_Spisok_diagnozov" FromRole="Med_karta" ToRole="Spisok_diagnozov" />
+          <NavigationProperty Name="Vrachi" Relationship="BoolModel.FK_Med_karta_Vrachi" FromRole="Med_karta" ToRole="Vrachi" />
+          <NavigationProperty Name="Zapis" Relationship="BoolModel.FK_Zapis_Med_karta1" FromRole="Med_karta" ToRole="Zapi" />
+          <NavigationProperty Name="Spisok_lekarstv" Relationship="BoolModel.Med_kart_and_Spisok_naznach" FromRole="Med_karta" ToRole="Spisok_lekarstv" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Rol_ID" />
+          </Key>
+          <Property Name="Rol_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="BoolModel.FK_User_Role" FromRole="Role" ToRole="User" />
         </EntityType>
         <EntityType Name="Spisok_diagnozov">
           <Key>
@@ -221,7 +349,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Naimenovanie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Opisanie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Med_karta" Relationship="Self.FK_Med_karta_Spisok_diagnozov" FromRole="Spisok_diagnozov" ToRole="Med_karta" />
+          <NavigationProperty Name="Med_karta" Relationship="BoolModel.FK_Med_karta_Spisok_diagnozov" FromRole="Spisok_diagnozov" ToRole="Med_karta" />
         </EntityType>
         <EntityType Name="Spisok_lekarstv">
           <Key>
@@ -230,7 +358,29 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Naimenovanie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Opisanie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Med_karta" Relationship="Self.Med_kart_and_Spisok_naznach" FromRole="Spisok_lekarstv" ToRole="Med_karta" />
+          <NavigationProperty Name="Med_karta" Relationship="BoolModel.Med_kart_and_Spisok_naznach" FromRole="Spisok_lekarstv" ToRole="Med_karta" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="User_Id" />
+          </Key>
+          <Property Name="User_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Rol_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Klients" Relationship="BoolModel.FK_Klient_User" FromRole="User" ToRole="Klient" />
+          <NavigationProperty Name="Role" Relationship="BoolModel.FK_User_Role" FromRole="User" ToRole="Role" />
+          <NavigationProperty Name="Vrachis" Relationship="BoolModel.FK_Vrachi_User" FromRole="User" ToRole="Vrachi" />
         </EntityType>
         <EntityType Name="Vrachi">
           <Key>
@@ -245,7 +395,9 @@
           <Property Name="Otdelenie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Vozrast" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Med_karta" Relationship="Self.FK_Med_karta_Vrachi" FromRole="Vrachi" ToRole="Med_karta" />
+          <Property Name="User_ID" Type="Int32" />
+          <NavigationProperty Name="Med_karta" Relationship="BoolModel.FK_Med_karta_Vrachi" FromRole="Vrachi" ToRole="Med_karta" />
+          <NavigationProperty Name="User" Relationship="BoolModel.FK_Vrachi_User" FromRole="Vrachi" ToRole="User" />
         </EntityType>
         <EntityType Name="Zapi">
           <Key>
@@ -254,25 +406,37 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ID_Med_kard" Type="Int32" Nullable="false" />
           <Property Name="ID_Klient" Type="Int32" Nullable="false" />
-          <Property Name="Vrach" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Klient" Relationship="Self.FK_Zapis_Klient" FromRole="Zapis" ToRole="Klient" />
-          <NavigationProperty Name="Med_karta" Relationship="Self.FK_Zapis_Med_karta1" FromRole="Zapis" ToRole="Med_karta" />
+          <Property Name="Vrach" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Klient" Relationship="BoolModel.FK_Zapis_Klient" FromRole="Zapi" ToRole="Klient" />
+          <NavigationProperty Name="Med_karta" Relationship="BoolModel.FK_Zapis_Med_karta1" FromRole="Zapi" ToRole="Med_karta" />
         </EntityType>
+        <Association Name="FK_Klient_User">
+          <End Type="BoolModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="BoolModel.Klient" Role="Klient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Klient">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Zapis_Klient">
-          <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
-          <End Role="Zapis" Type="Self.Zapi" Multiplicity="*" />
+          <End Type="BoolModel.Klient" Role="Klient" Multiplicity="1" />
+          <End Type="BoolModel.Zapi" Role="Zapi" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Klient">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Zapis">
+            <Dependent Role="Zapi">
               <PropertyRef Name="ID_Klient" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Med_karta_Spisok_diagnozov">
-          <End Role="Spisok_diagnozov" Type="Self.Spisok_diagnozov" Multiplicity="0..1" />
-          <End Role="Med_karta" Type="Self.Med_karta" Multiplicity="*" />
+          <End Type="BoolModel.Spisok_diagnozov" Role="Spisok_diagnozov" Multiplicity="0..1" />
+          <End Type="BoolModel.Med_karta" Role="Med_karta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Spisok_diagnozov">
               <PropertyRef Name="ID" />
@@ -283,8 +447,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Med_karta_Vrachi">
-          <End Role="Vrachi" Type="Self.Vrachi" Multiplicity="0..1" />
-          <End Role="Med_karta" Type="Self.Med_karta" Multiplicity="*" />
+          <End Type="BoolModel.Vrachi" Role="Vrachi" Multiplicity="0..1" />
+          <End Type="BoolModel.Med_karta" Role="Med_karta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Vrachi">
               <PropertyRef Name="ID" />
@@ -295,130 +459,155 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Zapis_Med_karta1">
-          <End Role="Med_karta" Type="Self.Med_karta" Multiplicity="1" />
-          <End Role="Zapis" Type="Self.Zapi" Multiplicity="*" />
+          <End Type="BoolModel.Med_karta" Role="Med_karta" Multiplicity="1" />
+          <End Type="BoolModel.Zapi" Role="Zapi" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Med_karta">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Zapis">
+            <Dependent Role="Zapi">
               <PropertyRef Name="ID_Med_kard" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Med_kart_and_Spisok_naznach">
-          <End Role="Med_karta" Type="Self.Med_karta" Multiplicity="*" />
-          <End Role="Spisok_lekarstv" Type="Self.Spisok_lekarstv" Multiplicity="*" />
+        <Association Name="FK_User_Role">
+          <End Type="BoolModel.Role" Role="Role" Multiplicity="1" />
+          <End Type="BoolModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Rol_ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Rol_ID" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="BOOLEntities3" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Klients" EntityType="Self.Klient" />
-          <EntitySet Name="Med_karta" EntityType="Self.Med_karta" />
-          <EntitySet Name="Spisok_diagnozov" EntityType="Self.Spisok_diagnozov" />
-          <EntitySet Name="Spisok_lekarstv" EntityType="Self.Spisok_lekarstv" />
-          <EntitySet Name="Vrachis" EntityType="Self.Vrachi" />
-          <EntitySet Name="Zapis" EntityType="Self.Zapi" />
-          <AssociationSet Name="FK_Zapis_Klient" Association="Self.FK_Zapis_Klient">
-            <End Role="Klient" EntitySet="Klients" />
-            <End Role="Zapis" EntitySet="Zapis" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Med_karta_Spisok_diagnozov" Association="Self.FK_Med_karta_Spisok_diagnozov">
-            <End Role="Spisok_diagnozov" EntitySet="Spisok_diagnozov" />
-            <End Role="Med_karta" EntitySet="Med_karta" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Med_karta_Vrachi" Association="Self.FK_Med_karta_Vrachi">
-            <End Role="Vrachi" EntitySet="Vrachis" />
-            <End Role="Med_karta" EntitySet="Med_karta" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Zapis_Med_karta1" Association="Self.FK_Zapis_Med_karta1">
-            <End Role="Med_karta" EntitySet="Med_karta" />
-            <End Role="Zapis" EntitySet="Zapis" />
-          </AssociationSet>
-          <AssociationSet Name="Med_kart_and_Spisok_naznach" Association="Self.Med_kart_and_Spisok_naznach">
-            <End Role="Med_karta" EntitySet="Med_karta" />
-            <End Role="Spisok_lekarstv" EntitySet="Spisok_lekarstv" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        <Association Name="FK_Vrachi_User">
+          <End Type="BoolModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="BoolModel.Vrachi" Role="Vrachi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Vrachi">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Med_kart_and_Spisok_naznach">
+          <End Type="BoolModel.Med_karta" Role="Med_karta" Multiplicity="*" />
+          <End Type="BoolModel.Spisok_lekarstv" Role="Spisok_lekarstv" Multiplicity="*" />
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище BOOLModelContainer" CdmEntityContainer="BOOLEntities3">
+        <EntityContainerMapping StorageEntityContainer="Хранилище BoolModelContainer" CdmEntityContainer="BoolEntities">
           <EntitySetMapping Name="Klients">
-            <EntityTypeMapping TypeName="BOOLModel.Klient">
+            <EntityTypeMapping TypeName="BoolModel.Klient">
               <MappingFragment StoreEntitySet="Klient">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Familia" ColumnName="Familia" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Otchestvo" ColumnName="Otchestvo" />
-                <ScalarProperty Name="Vozrast" ColumnName="Vozrast" />
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
                 <ScalarProperty Name="Mesto_raboti" ColumnName="Mesto_raboti" />
-                <ScalarProperty Name="Login" ColumnName="Login" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Vozrast" ColumnName="Vozrast" />
+                <ScalarProperty Name="Otchestvo" ColumnName="Otchestvo" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Familia" ColumnName="Familia" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Med_karta">
-            <EntityTypeMapping TypeName="BOOLModel.Med_karta">
+            <EntityTypeMapping TypeName="BoolModel.Med_karta">
               <MappingFragment StoreEntitySet="Med_karta">
+                <ScalarProperty Name="ID_Diagnoza" ColumnName="ID_Diagnoza" />
+                <ScalarProperty Name="Jalobi" ColumnName="Jalobi" />
+                <ScalarProperty Name="ID_Vrach" ColumnName="ID_Vrach" />
                 <ScalarProperty Name="Naznachenie" ColumnName="Naznachenie" />
                 <ScalarProperty Name="Date_posehenia" ColumnName="Date_posehenia" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ID_Vrach" ColumnName="ID_Vrach" />
-                <ScalarProperty Name="Jalobi" ColumnName="Jalobi" />
-                <ScalarProperty Name="ID_Diagnoza" ColumnName="ID_Diagnoza" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="BoolModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Rol_ID" ColumnName="Rol_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Spisok_diagnozov">
-            <EntityTypeMapping TypeName="BOOLModel.Spisok_diagnozov">
+            <EntityTypeMapping TypeName="BoolModel.Spisok_diagnozov">
               <MappingFragment StoreEntitySet="Spisok_diagnozov">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Naimenovanie" ColumnName="Naimenovanie" />
                 <ScalarProperty Name="Opisanie" ColumnName="Opisanie" />
+                <ScalarProperty Name="Naimenovanie" ColumnName="Naimenovanie" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Spisok_lekarstv">
-            <EntityTypeMapping TypeName="BOOLModel.Spisok_lekarstv">
+            <EntityTypeMapping TypeName="BoolModel.Spisok_lekarstv">
               <MappingFragment StoreEntitySet="Spisok_lekarstv">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Naimenovanie" ColumnName="Naimenovanie" />
                 <ScalarProperty Name="Opisanie" ColumnName="Opisanie" />
+                <ScalarProperty Name="Naimenovanie" ColumnName="Naimenovanie" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="BoolModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="BoolModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Rol_ID" ColumnName="Rol_ID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Vrachis">
-            <EntityTypeMapping TypeName="BOOLModel.Vrachi">
+            <EntityTypeMapping TypeName="BoolModel.Vrachi">
               <MappingFragment StoreEntitySet="Vrachi">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Familia" ColumnName="Familia" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Otchestvo" ColumnName="Otchestvo" />
-                <ScalarProperty Name="Stag" ColumnName="Stag" />
-                <ScalarProperty Name="Doljnost" ColumnName="Doljnost" />
-                <ScalarProperty Name="Otdelenie" ColumnName="Otdelenie" />
-                <ScalarProperty Name="Vozrast" ColumnName="Vozrast" />
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
                 <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Vozrast" ColumnName="Vozrast" />
+                <ScalarProperty Name="Otdelenie" ColumnName="Otdelenie" />
+                <ScalarProperty Name="Doljnost" ColumnName="Doljnost" />
+                <ScalarProperty Name="Stag" ColumnName="Stag" />
+                <ScalarProperty Name="Otchestvo" ColumnName="Otchestvo" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Familia" ColumnName="Familia" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Zapis">
-            <EntityTypeMapping TypeName="BOOLModel.Zapi">
+            <EntityTypeMapping TypeName="BoolModel.Zapi">
               <MappingFragment StoreEntitySet="Zapis">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ID_Med_kard" ColumnName="ID_Med_kard" />
-                <ScalarProperty Name="ID_Klient" ColumnName="ID_Klient" />
                 <ScalarProperty Name="Vrach" ColumnName="Vrach" />
+                <ScalarProperty Name="ID_Klient" ColumnName="ID_Klient" />
+                <ScalarProperty Name="ID_Med_kard" ColumnName="ID_Med_kard" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="Med_kart_and_Spisok_naznach" TypeName="BOOLModel.Med_kart_and_Spisok_naznach" StoreEntitySet="Med_kart_and_Spisok_naznach">
-            <EndProperty Name="Med_karta">
-              <ScalarProperty Name="ID" ColumnName="ID_Med_kard" />
-            </EndProperty>
+          <AssociationSetMapping Name="Med_kart_and_Spisok_naznach" TypeName="BoolModel.Med_kart_and_Spisok_naznach" StoreEntitySet="Med_kart_and_Spisok_naznach">
             <EndProperty Name="Spisok_lekarstv">
               <ScalarProperty Name="ID" ColumnName="ID_Spiska_lekarstv" />
+            </EndProperty>
+            <EndProperty Name="Med_karta">
+              <ScalarProperty Name="ID" ColumnName="ID_Med_kard" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

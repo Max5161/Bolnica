@@ -47,5 +47,11 @@
             <Setter Property="FontWeight" Value="Bold"/>
 
         </Style>
+
+
+
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+        </Style>
     </Application.Resources>
 </Application>

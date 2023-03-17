@@ -22,11 +22,11 @@ namespace Bolnica.Entities
         }
     
         public int ID { get; set; }
+        public Nullable<System.DateTime> Date_posehenia { get; set; }
+        public string Naznachenie { get; set; }
         public Nullable<int> ID_Vrach { get; set; }
         public string Jalobi { get; set; }
         public Nullable<int> ID_Diagnoza { get; set; }
-        public Nullable<System.DateTime> Date_posehenia { get; set; }
-        public string Naznachenie { get; set; }
     
         public virtual Spisok_diagnozov Spisok_diagnozov { get; set; }
         public virtual Vrachi Vrachi { get; set; }

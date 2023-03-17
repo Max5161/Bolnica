@@ -12,27 +12,18 @@ namespace Bolnica.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Vrachi
+    public partial class Role
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Vrachi()
+        public Role()
         {
-            this.Med_karta = new HashSet<Med_karta>();
+            this.Users = new HashSet<User>();
         }
     
-        public int ID { get; set; }
-        public string Familia { get; set; }
+        public int Rol_ID { get; set; }
         public string Name { get; set; }
-        public string Otchestvo { get; set; }
-        public Nullable<int> Stag { get; set; }
-        public string Doljnost { get; set; }
-        public string Otdelenie { get; set; }
-        public string Vozrast { get; set; }
-        public string Photo { get; set; }
-        public Nullable<int> User_ID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Med_karta> Med_karta { get; set; }
-        public virtual User User { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

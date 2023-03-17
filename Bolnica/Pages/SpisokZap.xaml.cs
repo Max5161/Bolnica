@@ -26,12 +26,9 @@ namespace Bolnica.Pages
             ComboSortBy.SelectedIndex = 0;
             UpdateBol();
         }
-
-        
         public void UpdateBol()
         {
             var bol = App.Context.Vrachis.ToList();
-
             // Сортировка по должности
             if (ComboSortBy.SelectedIndex == 1)
                 bol = bol.Where(p => p.Doljnost == "психиатр").ToList();
@@ -61,43 +58,31 @@ namespace Bolnica.Pages
                 bol = bol.Where(p => p.Doljnost == "кардиолог").ToList();
             if (ComboSortBy.SelectedIndex == 14)
                 bol = bol.Where(p => p.Doljnost == "эпидемиолог").ToList();
-
             // Поиск
             bol = bol.Where(p => p.Familia.ToLower().Contains(TboxSerch.Text.ToLower())).ToList();
-
             LviewService.ItemsSource = bol;
         }
-
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
         {
-
         }
-
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
-
         }
-
         private void TboxSerch_TextChanged(object sender, TextChangedEventArgs e)
         {
             UpdateBol();
         }
-
-
-      
         private void ComboSortBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateBol();
         }
-
         private void BtnZapis_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new ZapkVrach());
         }
-
-        private void BtnVihod_Click(object sender, RoutedEventArgs e)
+        private void BtnSpiszap_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Pages.LoginPage());
+            NavigationService.Navigate(new SpisZapkVrachh(App.CurrentKlient));
         }
     }
 }

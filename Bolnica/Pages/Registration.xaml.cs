@@ -21,16 +21,18 @@ namespace Bolnica.Pages
     public partial class Registration : Page
     {
         private Entities.Klient _currentService = null;
-
         public Registration()
         {
             InitializeComponent();
         }
-
-
         private void ButttonADDKlient_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentService == null)
+            if (string.IsNullOrWhiteSpace(TboxFamilia.Text) || string.IsNullOrWhiteSpace(TboxName.Text) || string.IsNullOrWhiteSpace(TboxOtchestvo.Text)
+                || string.IsNullOrWhiteSpace(TboxVozast.Text) || string.IsNullOrWhiteSpace(TboxRabota.Text) || (string.IsNullOrWhiteSpace(TboxLogin.Text)
+                || string.IsNullOrWhiteSpace(Tboxpassword.Text) == true))
+            {
+                MessageBox.Show("Не заполнены данные", "Ошибка");
+            } else
             {
                 var Zapic = new Entities.Klient
                 {
@@ -39,14 +41,12 @@ namespace Bolnica.Pages
                     Otchestvo = TboxOtchestvo.Text,
                     Vozrast = int.Parse(TboxVozast.Text),
                     Mesto_raboti = TboxRabota.Text,
-                    Login = TboxLogin.Text,
-                    Password = Tboxpassword.Text,
-
                 };
                 App.Context.Klients.Add(Zapic);
                 App.Context.SaveChanges();
                 NavigationService.GoBack();
             }
+           
         }
 
         private void TboxRabota_TextChanged(object sender, TextChangedEventArgs e)
@@ -60,6 +60,11 @@ namespace Bolnica.Pages
         }
 
         private void Tboxpassword_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void TboxOtchestvo_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
