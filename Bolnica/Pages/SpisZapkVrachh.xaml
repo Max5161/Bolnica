@@ -31,6 +31,8 @@
                                            Text="{Binding ID, StringFormat={}ID записи: {0}}"/>
                                     <TextBlock Style="{StaticResource NeglavTextBlock1}" 
                                            Text="{Binding Med_karta.Jalobi, StringFormat={}Жалобы: {0}}"/>
+                                    <TextBlock Style="{StaticResource NeglavTextBlock1}" 
+                                           Text="{Binding EndHealing, StringFormat={}Статус: {0}}"/>
                                     <TextBlock Style="{StaticResource NeglavTextBlock1}">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="{}ФИО врача: {0} {1} {2}">
@@ -44,7 +46,10 @@
                                     <TextBlock Text="{Binding Details, StringFormat={}Примечания врача: {0}}" Style="{StaticResource NeglavTextBlock1}"/>
                                     <TextBox x:Name="TBoxDetails" IsReadOnly="{Binding IsReadOnly}" Visibility="{Binding AdminVisibility}" Text="{Binding Detailss,RelativeSource={RelativeSource AncestorType={x:Type Page}} ,
                                         Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                    <WrapPanel Orientation="Horizontal" ItemWidth="150">
                                     <Button x:Name="btnSave" Content="Отправить" Click="btnSave_Click" Visibility="{Binding AdminVisibility}"/>
+                                        <Button x:Name="BtnEnd" Content="Завершить лечение" Click="BtnEnd_Click" Visibility="{Binding AdminVisibility}"/>
+                                    </WrapPanel>
 
                                 </StackPanel>
 

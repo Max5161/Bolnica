@@ -59,5 +59,15 @@ namespace Bolnica.Pages
                 App.Context.SaveChanges();
 
         }
+
+        private void BtnEnd_Click(object sender, RoutedEventArgs e)
+        {
+            var currentZapi = (sender as Button).DataContext as Zapi;
+            currentZapi.EndHealing = "Окончено";
+
+            App.Context.Zapis.Attach(currentZapi);
+            App.Context.Entry(currentZapi).Property(x => x.EndHealing).IsModified = true;
+            App.Context.SaveChanges();
+        }
     }
 }

@@ -59,6 +59,16 @@
           <Property Name="Naimenovanie" Type="nvarchar" MaxLength="50" />
           <Property Name="Opisanie" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="User_Id" />
@@ -92,6 +102,7 @@
           <Property Name="ID_Klient" Type="int" Nullable="false" />
           <Property Name="Vrach" Type="int" Nullable="false" />
           <Property Name="Details" Type="nvarchar(max)" />
+          <Property Name="EndHealing" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_Klient_User">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
@@ -208,6 +219,7 @@
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Spisok_diagnozov" EntityType="Self.Spisok_diagnozov" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Spisok_lekarstv" EntityType="Self.Spisok_lekarstv" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vrachi" EntityType="Self.Vrachi" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Zapis" EntityType="Self.Zapis" Schema="dbo" store:Type="Tables" />
@@ -258,6 +270,7 @@
           <EntitySet Name="Roles" EntityType="BoolModel.Role" />
           <EntitySet Name="Spisok_diagnozov" EntityType="BoolModel.Spisok_diagnozov" />
           <EntitySet Name="Spisok_lekarstv" EntityType="BoolModel.Spisok_lekarstv" />
+          <EntitySet Name="sysdiagrams" EntityType="BoolModel.sysdiagram" />
           <EntitySet Name="Users" EntityType="BoolModel.User" />
           <EntitySet Name="Vrachis" EntityType="BoolModel.Vrachi" />
           <EntitySet Name="Zapis" EntityType="BoolModel.Zapi" />
@@ -349,6 +362,16 @@
           <Property Name="Opisanie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Med_karta" Relationship="BoolModel.Med_kart_and_Spisok_naznach" FromRole="Spisok_lekarstv" ToRole="Med_karta" />
         </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="User_Id" />
@@ -387,6 +410,7 @@
           <Property Name="ID_Klient" Type="Int32" Nullable="false" />
           <Property Name="Vrach" Type="Int32" Nullable="false" />
           <Property Name="Details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EndHealing" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Klient" Relationship="BoolModel.FK_Zapis_Klient" FromRole="Zapi" ToRole="Klient" />
           <NavigationProperty Name="Med_karta" Relationship="BoolModel.FK_Zapis_Med_karta1" FromRole="Zapi" ToRole="Med_karta" />
         </EntityType>
@@ -535,6 +559,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="BoolModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="BoolModel.User">
               <MappingFragment StoreEntitySet="User">
@@ -564,6 +599,7 @@
           <EntitySetMapping Name="Zapis">
             <EntityTypeMapping TypeName="BoolModel.Zapi">
               <MappingFragment StoreEntitySet="Zapis">
+                <ScalarProperty Name="EndHealing" ColumnName="EndHealing" />
                 <ScalarProperty Name="Details" ColumnName="Details" />
                 <ScalarProperty Name="Vrach" ColumnName="Vrach" />
                 <ScalarProperty Name="ID_Klient" ColumnName="ID_Klient" />

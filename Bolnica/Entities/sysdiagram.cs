@@ -12,16 +12,12 @@ namespace Bolnica.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Zapi
+    public partial class sysdiagram
     {
-        public int ID { get; set; }
-        public int ID_Med_kard { get; set; }
-        public int ID_Klient { get; set; }
-        public int Vrach { get; set; }
-        public string Details { get; set; }
-        public string EndHealing { get; set; }
-    
-        public virtual Klient Klient { get; set; }
-        public virtual Med_karta Med_karta { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

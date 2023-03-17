@@ -103,6 +103,9 @@
     <Compile Include="Entities\Spisok_lekarstv.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\sysdiagram.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\User.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
