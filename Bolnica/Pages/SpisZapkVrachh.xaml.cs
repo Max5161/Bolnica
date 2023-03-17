@@ -1,6 +1,8 @@
 ﻿using Bolnica.Entities;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,23 +23,41 @@ namespace Bolnica.Pages
     /// </summary>
     public partial class SpisZapkVrachh : Page
     {
+        private string details;
+        private List<Zapi> zapis;
+        public string Detailss { get => details; set => details = value; }
+        public List<Zapi> Zapis { get => zapis; set => zapis = value; }
+
+
         User User;
         public SpisZapkVrachh(User user)
         {
             InitializeComponent();
+            DataContext = this;
             User = user;
             if (User.Rol_ID == 1)
             {
               var UserKlient = User.Klients.FirstOrDefault(p=> p.User.Equals(User)); 
-              LviewService1.ItemsSource = App.Context.Zapis.Where(p=> p.ID_Klient == UserKlient.ID).ToList();  
+              Zapis = App.Context.Zapis.Where(p=> p.ID_Klient == UserKlient.ID).ToList();  
             }
               else
                 if (User.Rol_ID == 2)
             {
                
                 var UserVrachi = User.Vrachis.FirstOrDefault(p => p.User.Equals(User));
-                LviewService1.ItemsSource = App.Context.Zapis.Where(p => p.Vrach == UserVrachi.ID).ToList();
+                Zapis = App.Context.Zapis.Where(p => p.Vrach == UserVrachi.ID).ToList();
             }
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            var currentZapi = (sender as Button).DataContext as Zapi;
+            currentZapi.Details = Detailss;
+
+                App.Context.Zapis.Attach(currentZapi);
+                App.Context.Entry(currentZapi).Property(x => x.Details).IsModified = true;
+                App.Context.SaveChanges();
+
         }
     }
 }

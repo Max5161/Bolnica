@@ -18,6 +18,7 @@ namespace Bolnica.Entities
         public int ID_Med_kard { get; set; }
         public int ID_Klient { get; set; }
         public int Vrach { get; set; }
+        public string Details { get; set; }
     
         public virtual Klient Klient { get; set; }
         public virtual Med_karta Med_karta { get; set; }

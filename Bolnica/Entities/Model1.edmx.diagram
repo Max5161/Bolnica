@@ -4,16 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="82975c16e4394004a6019fe30bd59d8a" Name="Diagram1" ZoomLevel="94">
-        <EntityTypeShape EntityType="BoolModel.Klient" Width="1.5" PointX="5.25" PointY="1.125" />
-        <EntityTypeShape EntityType="BoolModel.Med_karta" Width="1.5" PointX="7.5" PointY="4.875" />
+      <Diagram DiagramId="82975c16e4394004a6019fe30bd59d8a" Name="Diagram1" ZoomLevel="60">
+        <EntityTypeShape EntityType="BoolModel.Klient" Width="1.5" PointX="5.25" PointY="5.25" />
+        <EntityTypeShape EntityType="BoolModel.Med_karta" Width="1.5" PointX="7.5" PointY="1.375" />
         <EntityTypeShape EntityType="BoolModel.Role" Width="1.5" PointX="0.75" PointY="3.75" />
-        <EntityTypeShape EntityType="BoolModel.Spisok_diagnozov" Width="1.5" PointX="5.25" PointY="9.375" />
-        <EntityTypeShape EntityType="BoolModel.Spisok_lekarstv" Width="1.5" PointX="9.75" PointY="5.375" />
-        <EntityTypeShape EntityType="BoolModel.sysdiagram" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="BoolModel.Spisok_diagnozov" Width="1.5" PointX="5.25" PointY="8.875" />
+        <EntityTypeShape EntityType="BoolModel.Spisok_lekarstv" Width="1.5" PointX="9.75" PointY="0.875" />
         <EntityTypeShape EntityType="BoolModel.User" Width="1.5" PointX="3" PointY="3.375" />
-        <EntityTypeShape EntityType="BoolModel.Vrachi" Width="1.5" PointX="5.25" PointY="4.625" />
-        <EntityTypeShape EntityType="BoolModel.Zapi" Width="1.5" PointX="7.5" PointY="1.5" />
+        <EntityTypeShape EntityType="BoolModel.Vrachi" Width="1.5" PointX="5.25" PointY="1.125" />
+        <EntityTypeShape EntityType="BoolModel.Zapi" Width="1.5" PointX="9.75" PointY="3.5" />
         <AssociationConnector Association="BoolModel.FK_Klient_User" />
         <AssociationConnector Association="BoolModel.FK_Zapis_Klient" />
         <AssociationConnector Association="BoolModel.FK_Med_karta_Spisok_diagnozov" />

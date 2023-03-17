@@ -52,4 +52,47 @@ namespace Bolnica.Entities
         }
 
     }
+
+    partial class User
+    {
+        public string IsReadOnly
+        {
+            get
+            {
+                if (App.CurrentKlient.Rol_ID == 2)
+                    return "False";
+                else return "True";
+            }
+        }
+
+        public string AdminVisibility
+        {
+            get
+            {
+                if ( App.CurrentKlient.Rol_ID == 1)
+                    return "Collapsed"; else return "Visible";
+            }
+        }
+    }
+    partial class Zapi
+    {
+        public string IsReadOnly
+        {
+            get
+            {
+                if (App.CurrentKlient.Rol_ID == 2)
+                    return "False";
+                else return "True";
+            }
+        }
+        public string AdminVisibility
+        {
+            get
+            {
+                if (App.CurrentKlient.Rol_ID == 1)
+                    return "Collapsed";
+                else return "Visible";
+            }
+        }
+    }
 }
